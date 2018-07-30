@@ -1,0 +1,36 @@
+{
+    "elements":
+    [
+      { "type": "Label",
+        "label": "TV Headend Settings",
+      },
+      { "type": "ValidationTextBox",
+        "name": "TvhIP",
+        "caption": "IP Adresse des TVH servers"
+      },
+      { "type": "NumberSpinner",
+        "name": "TvhPort",
+        "caption": "Port des TVH Webinterfaces"
+      },
+      { "type": "ValidationTextBox",
+        "name": "TvhMac",
+        "caption": "Mac Adresse des TVH Servers"
+      },
+      { "type": "ValidationTextBox",
+        "name": "Broadcast",
+        "caption": "Broadcast Adresse des Netzwerkes"
+      },
+      { "type": "ValidationTextBox",
+        "name": "ServerUsername",
+        "caption": "Root Benutzer des Servers"
+      },
+      { "type": "PasswordTextBox",
+        "name": "ServerPassword",
+        "caption": "Root Passwort des Servers"
+      },
+      { "type": "IntervalBox",
+        "name": "UpdateTimerInterval",
+        "caption": "Seconds"
+      }
+    ]
+}
