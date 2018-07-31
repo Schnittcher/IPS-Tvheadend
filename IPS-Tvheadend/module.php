@@ -22,11 +22,12 @@ class IPS_Tvheadend extends IPSModule
         $this->RegisterVariableBoolean('TVHStatus','Server Status','TVH.ServerStatus',1);
         $this->RegisterVariableBoolean('TVHPower','Power','~Switch',2);
         $this->RegisterVariableInteger('TVHConnections','Verbindungen','',3);
-        $this->RegisterVariableString('TVHSubscriptionsInfo','Subscriptions','~HTMLBox',4);
-        $this->RegisterVariableString('TVHNextRecordingChannel','Nächste Aufnahme Kanal','',5);
-        $this->RegisterVariableString('TVHNextRecording','Nächste Aufnahme','',6);
-        $this->RegisterVariableInteger('TVHNextRecordingStartTime','Nächste Aufnahme Startzeit','~UnixTimestamp',7);
-        $this->RegisterVariableInteger('TVHNextRecordingEndTime','Nächste Aufnahme Endzeit','~UnixTimestamp',8);
+        $this->RegisterVariableInteger('TVHSubscriptions','Subscriptions','',4);
+        $this->RegisterVariableString('TVHSubscriptionsInfo','Subscription Infos','~HTMLBox',5);
+        $this->RegisterVariableString('TVHNextRecordingChannel','Nächste Aufnahme Kanal','',6);
+        $this->RegisterVariableString('TVHNextRecording','Nächste Aufnahme','',7);
+        $this->RegisterVariableInteger('TVHNextRecordingStartTime','Nächste Aufnahme Startzeit','~UnixTimestamp',8);
+        $this->RegisterVariableInteger('TVHNextRecordingEndTime','Nächste Aufnahme Endzeit','~UnixTimestamp',9);
 
         $this->RegisterTimer('TVH_UpdateActuallyStatus', 0, 'TVH_updateActuallyStatus($_IPS[\'TARGET\']);');
    }
@@ -55,6 +56,7 @@ class IPS_Tvheadend extends IPSModule
         $this->checkServerStatus();
         $this->getNextRecording();
         $this->getConnections();
+        $this->getSubscriptions();
     }
 
     public function checkServerStatus()
@@ -103,8 +105,16 @@ class IPS_Tvheadend extends IPSModule
     public function getConnections()
     {
         $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'));
-        $connections = $TVH->getSubscriptions();
+        $connections = $TVH->getConnections();
         SetValue($this->GetIDForIdent('TVHConnections'),$connections['totalCount']);
+    }
+
+
+    public function getSubscriptions()
+    {
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'));
+        $connections = $TVH->getSubscriptions();
+        SetValue($this->GetIDForIdent('TVHSubscriptions'),$connections['totalCount']);
 
         $htmlbox = '
         <style type="text/css">
