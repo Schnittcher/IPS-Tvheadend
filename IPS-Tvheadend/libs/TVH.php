@@ -18,7 +18,7 @@ class TVH {
         $url = "http://admin:tv@".$this->ip.":".$this->port."/".$parm;
         $json = @file_get_contents($url);
         if ($json === FALSE) {
-            //throw new Exception("Cannot access '$url' to read contents.");
+            return false;
         } else {
              $data = json_decode($json, TRUE);
             return $data;

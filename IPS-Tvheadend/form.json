@@ -2,7 +2,7 @@
     "elements":
     [
       { "type": "Label",
-        "label": "TV Headend Settings",
+        "label": "TV Headend Settings"
       },
       { "type": "ValidationTextBox",
         "name": "TvhIP",

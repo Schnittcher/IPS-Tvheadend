@@ -9,7 +9,6 @@ class IPS_Tvheadend extends IPSModule
     {
         //Never delete this line!
         parent::Create();
-        //Connect to Websocket Client
         $this->RegisterPropertyString('TvhIP', '');
         $this->RegisterPropertyInteger('TvhPort', 9981);
         $this->RegisterPropertyString('TvhMac', '');
@@ -152,13 +151,15 @@ class IPS_Tvheadend extends IPSModule
 		<tr>';
         if (is_array($connections)) {
             foreach ($connections['entries'] as $connection) {
-                $htmlbox .= '<td class="odd">'.$connection['username'].'</td>';
-                $htmlbox .= '<td>'.$connection['hostname'].'</td>';
-                $htmlbox .= '<td>'.date("d.m.Y H:i",$connection['start']).'</td>';
-                $htmlbox .= '<td>'.$connection['title'].'</td>';
-                $htmlbox .= '<td>'.$connection['channel'].'</td>';
-                $htmlbox .= '<td>'.$connection['profile'].'</td>';
-                $htmlbox .= '</tr>';
+                if (array_key_exists ('username', $connection)) {
+                    $htmlbox .= '<td class="odd">'.$connection['username'].'</td>';
+                    $htmlbox .= '<td>'.$connection['hostname'].'</td>';
+                    $htmlbox .= '<td>'.date("d.m.Y H:i",$connection['start']).'</td>';
+                    $htmlbox .= '<td>'.$connection['title'].'</td>';
+                    $htmlbox .= '<td>'.$connection['channel'].'</td>';
+                    $htmlbox .= '<td>'.$connection['profile'].'</td>';
+                    $htmlbox .= '</tr>';
+                }
             }
         }
         $htmlbox .=	'</tbody></table>';
