@@ -87,6 +87,8 @@ class IPS_Tvheadend extends IPSModule
         $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'));
         $recordings = $TVH->getUpcomingRecordings();
 
+        $this->SendDebug(__FUNCTION__." Recordings Count",count($recordings),0);
+
         if (is_array($recordings)) {
             if(count($recordings['entries']) > 0) {
                 $startTime = $recordings['entries'][0]['start'];
