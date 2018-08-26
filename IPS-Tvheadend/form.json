@@ -28,6 +28,14 @@
         "name": "ServerPassword",
         "caption": "Root Passwort des Servers"
       },
+      { "type": "ValidationTextBox",
+        "name": "WebinterfaceUsername",
+        "caption": "Admin Benutzer für das Webinterface"
+      },
+      { "type": "PasswordTextBox",
+        "name": "WebinterfacePassword",
+        "caption": "Passwort für das Webinterface"
+      },
       { "type": "IntervalBox",
         "name": "UpdateTimerInterval",
         "caption": "Seconds"

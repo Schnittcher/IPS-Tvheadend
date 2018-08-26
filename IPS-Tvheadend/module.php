@@ -15,6 +15,9 @@ class IPS_Tvheadend extends IPSModule
         $this->RegisterPropertyString('Broadcast', '');
         $this->RegisterPropertyString('ServerUsername', 'root');
         $this->RegisterPropertyString('ServerPassword', '');
+        $this->RegisterPropertyString('WebinterfaceUsername', 'admin');
+        $this->RegisterPropertyString('WebinterfacePassword', '');
+
         $this->RegisterPropertyInteger('UpdateTimerInterval', 20);
 
         $this->createVariablenProfiles();
@@ -60,14 +63,14 @@ class IPS_Tvheadend extends IPSModule
 
     public function checkServerStatus()
     {
-        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'));
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
         SetValue($this->GetIDForIdent('TVHStatus'),$TVH->getServerStatus());
         SetValue($this->GetIDForIdent('TVHPower'),$TVH->getServerStatus());
     }
 
     public function wakeUP()
     {
-        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'));
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
         $TVH->WakeOnLan($this->ReadPropertyString('Broadcast'));
     }
 
@@ -84,7 +87,7 @@ class IPS_Tvheadend extends IPSModule
 
     public function getNextRecording()
     {
-        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'));
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
         $recordings = $TVH->getUpcomingRecordings();
 
         $this->SendDebug(__FUNCTION__." Recordings Count",count($recordings),0);
@@ -105,7 +108,7 @@ class IPS_Tvheadend extends IPSModule
 
     public function getConnections()
     {
-        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'));
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
         $connections = $TVH->getConnections();
         SetValue($this->GetIDForIdent('TVHConnections'),$connections['totalCount']);
     }
@@ -113,7 +116,7 @@ class IPS_Tvheadend extends IPSModule
 
     public function getSubscriptions()
     {
-        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'));
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
         $connections = $TVH->getSubscriptions();
         SetValue($this->GetIDForIdent('TVHSubscriptions'),$connections['totalCount']);
 

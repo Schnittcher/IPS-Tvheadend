@@ -4,18 +4,22 @@ class TVH {
 
     private $ip;
     private $port;
+    private $wUsername;
+    private $wPassword;
 
-    public function __construct($ip,$port,$mac)
+    public function __construct($ip,$port,$mac,$wUsername,$wPassword)
     {
         $this->ip = $ip;
         $this->port = $port;
         $this->mac = $mac;
+        $this->wUsername = $wUsername;
+        $this->wPassword = $wPassword;
         return $this;
     }
 
     private function request($parm)
     {
-        $url = "http://admin:tv@".$this->ip.":".$this->port."/".$parm;
+        $url = "http://".$this->wUsername.":".$this->wPassword."@".$this->ip.":".$this->port."/".$parm;
         $json = @file_get_contents($url);
         if ($json === FALSE) {
             return false;
