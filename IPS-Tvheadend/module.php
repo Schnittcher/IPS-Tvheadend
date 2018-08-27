@@ -108,6 +108,11 @@ class IPS_Tvheadend extends IPSModule
                 SetValue($this->GetIDForIdent('TVHNextRecording'),$title);
                 SetValue($this->GetIDForIdent('TVHNextRecordingStartTime'),$startTime);
                 SetValue($this->GetIDForIdent('TVHNextRecordingEndTime'),$endTime);
+            } else {
+                SetValue($this->GetIDForIdent('TVHNextRecordingChannel'),'');
+                SetValue($this->GetIDForIdent('TVHNextRecording'),'Keine Aufnahme geplant');
+                SetValue($this->GetIDForIdent('TVHNextRecordingStartTime'),0);
+                SetValue($this->GetIDForIdent('TVHNextRecordingEndTime'),0); 
             }
         }
     }
