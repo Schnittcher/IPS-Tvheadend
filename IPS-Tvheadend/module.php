@@ -168,12 +168,36 @@ class IPS_Tvheadend extends IPSModule
         if (is_array($connections)) {
             foreach ($connections['entries'] as $connection) {
                 if (array_key_exists ('username', $connection)) {
-                    $htmlbox .= '<td class="odd">'.$connection['username'].'</td>';
-                    $htmlbox .= '<td>'.$connection['hostname'].'</td>';
-                    $htmlbox .= '<td>'.date("d.m.Y H:i",$connection['start']).'</td>';
-                    $htmlbox .= '<td>'.$connection['title'].'</td>';
-                    $htmlbox .= '<td>'.$connection['channel'].'</td>';
-                    $htmlbox .= '<td>'.$connection['profile'].'</td>';
+                    if (array_key_exists ('username', $connection)) {
+                        $htmlbox .= '<td class="odd">'.$connection['username'].'</td>';
+                    } else {
+                        $htmlbox .= '<td class="odd"> </td>';
+                    }
+                    if (array_key_exists ('hostname', $connection)) {
+                        $htmlbox .= '<td>'.$connection['hostname'].'</td>';
+                    } else {
+                        $htmlbox .= '<td> </td>';
+                    }
+                    if (array_key_exists ('start', $connection)) {
+                        $htmlbox .= '<td>'.date("d.m.Y H:i",$connection['start']).'</td>';
+                    } else {
+                        $htmlbox .= '<td> </td>';
+                    }
+                    if (array_key_exists ('title', $connection)) {
+                        $htmlbox .= '<td>'.$connection['title'].'</td>';
+                    } else {
+                        $htmlbox .= '<td> </td>';
+                    }
+                    if (array_key_exists ('channel', $connection)) {
+                        $htmlbox .= '<td>'.$connection['channel'].'</td>';
+                    } else {
+                        $htmlbox .= '<td> </td>';
+                    }
+                    if (array_key_exists ('profile', $connection)) {
+                        $htmlbox .= '<td>'.$connection['profile'].'</td>';
+                    } else {
+                        $htmlbox .= '<td> </td>';
+                    }
                     $htmlbox .= '</tr>';
                 }
             }
