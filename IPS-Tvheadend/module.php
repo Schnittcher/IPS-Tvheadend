@@ -18,6 +18,8 @@ class IPS_Tvheadend extends IPSModule
         $this->RegisterPropertyString('WebinterfaceUsername', 'admin');
         $this->RegisterPropertyString('WebinterfacePassword', '');
 
+        $this->RegisterPropertyInteger('StartTimeRecording', 5);
+        $this->RegisterPropertyInteger('EndTimeRecording', 5);
         $this->RegisterPropertyInteger('UpdateTimerInterval', 20);
 
         $this->createVariablenProfiles();
@@ -30,6 +32,7 @@ class IPS_Tvheadend extends IPSModule
         $this->RegisterVariableString('TVHNextRecording','Nächste Aufnahme','',7);
         $this->RegisterVariableInteger('TVHNextRecordingStartTime','Nächste Aufnahme Startzeit','~UnixTimestamp',8);
         $this->RegisterVariableInteger('TVHNextRecordingEndTime','Nächste Aufnahme Endzeit','~UnixTimestamp',9);
+        $this->RegisterVariableBoolean('TVHActiveRecording','Aktive Aufnahme','TVH.ActiveRecording',10);
 
         $this->RegisterTimer('TVH_UpdateActuallyStatus', 0, 'TVH_updateActuallyStatus($_IPS[\'TARGET\']);');
    }
@@ -51,10 +54,15 @@ class IPS_Tvheadend extends IPSModule
             array(false, 'Offline',  '', 0xFF0000),
             array(true, 'Online',  '', 0x00FF00)
         ));
+        $this->RegisterProfileBooleanEx('TVH.ActiveRecording', 'TV', '', '', array(
+            array(false, 'Nein',  '', 0xFF0000),
+            array(true, 'Ja',  '', 0x00FF00)
+        ));
     }
 
     public function updateActuallyStatus()
     {
+        $this->checkActiveRecording();
         $this->checkServerStatus();
         $this->getNextRecording();
         $this->getConnections();
@@ -90,14 +98,12 @@ class IPS_Tvheadend extends IPSModule
         $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
         $recordings = $TVH->getUpcomingRecordings();
 
-        $this->SendDebug(__FUNCTION__." Recordings Count",count($recordings),0);
-
         if (is_array($recordings)) {
             if(count($recordings['entries']) > 0) {
                 $startTime = $recordings['entries'][0]['start'];
                 $endTime = $recordings['entries'][0]['stop'];
                 $channel = $recordings['entries'][0]['channelname'];
-                $title = $recordings['entries'][0]['title']['ger']. " - ". $recordings['entries'][0]['subtitle']['ger'];
+                $title = $recordings['entries'][0]['title']['ger']. " - ". $recordings['entries'][0]['disp_subtitle'];
                 SetValue($this->GetIDForIdent('TVHNextRecordingChannel'),$channel);
                 SetValue($this->GetIDForIdent('TVHNextRecording'),$title);
                 SetValue($this->GetIDForIdent('TVHNextRecordingStartTime'),$startTime);
@@ -169,6 +175,27 @@ class IPS_Tvheadend extends IPSModule
         }
         $htmlbox .=	'</tbody></table>';
         SetValue($this->GetIDForIdent('TVHSubscriptionsInfo'),$htmlbox);
+    }
+
+    private function checkActiveRecording() {
+        $RecordingStartTime = GetValue($this->GetIDForIdent('TVHNextRecordingStartTime'));
+        $RecordingEndTime = GetValue($this->GetIDForIdent('TVHNextRecordingEndTime'));
+
+        $RecordingStartTime = (int)$RecordingStartTime+($this->ReadPropertyInteger('StartTimeRecording')*60);
+        $RecordingEndTime = (int)$RecordingEndTime+($this->ReadPropertyInteger('EndTimeRecording')*60);
+
+        if ($RecordingStartTime <= time()) {
+            $this->SendDebug(__FUNCTION__. "EndTime", "Aktuelle Zeit: ".time(),0);
+            $this->SendDebug(__FUNCTION__. "EndTime", "Aufnahme Startzeit: ".$RecordingEndTime,0);
+
+            SetValue($this->GetIDForIdent('TVHActiveRecording'), true);
+        }
+
+        if ($RecordingEndTime >= time()) {
+            $this->SendDebug(__FUNCTION__. "EndTime", "Aktuelle Zeit: ".time(),0);
+            $this->SendDebug(__FUNCTION__. "EndTime", "Aufnahme Endzeit: ".$RecordingEndTime,0);
+            SetValue($this->GetIDForIdent('TVHActiveRecording'), false);
+        }
     }
 
     public function RequestAction($Ident, $Value)

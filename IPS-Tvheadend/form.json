@@ -36,6 +36,20 @@
         "name": "WebinterfacePassword",
         "caption": "Passwort für das Webinterface"
       },
+      { "type": "Label",
+        "caption": "Vorlaufzeit Aufname"
+      },
+      { "type": "IntervalBox",
+        "name": "StartTimeRecording",
+        "caption": "Minutes"
+      },
+      { "type": "Label",
+        "caption": "Nachlaufzeit Aufname"
+      },
+      { "type": "IntervalBox",
+        "name": "EndTimeRecording",
+        "caption": "Minutes"
+      },
       { "type": "IntervalBox",
         "name": "UpdateTimerInterval",
         "caption": "Seconds"

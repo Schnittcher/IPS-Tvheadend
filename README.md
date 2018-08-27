@@ -36,6 +36,10 @@ Mac Adresse des TVH Servers | Hier wird die MAC Adresse des Tvheadend Server ein
 Broadcast Adresse des Netzwerkes |Hier wird die Broadcast Adresse des Netzwerkes eingegeben, damit der Tvheadend Server per WOL gestartet werden kann.
 Root Benutzer des Servers | Root Benutzer des Servers, auf dem Tvheadend installiert ist, darüber kann der Server heruntergefahren werden.
 Root Passwort des Servers | Root Passwort des Servers, auf dem Tvheadend installiert ist, darüber kann der Server heruntergefahren werden.
+Admin Benutzer für das Webinterface | Admin Benutzer für das TVH Webinterface.
+Admin Passwort für das Webinterface | Admin Passwort für das TVH Webinterface.
+Vorlaufzeit Aufname | Zeit, die auf die Startzeit der Aufnahme addiert wird.
+Nachlaufzeit Aufname | Zeit, die auf die Endzeit der Aufnahme addiert wird.
 IntervalBox | Hier kann de Zeit eingestellt werden, wie oft das Modul die Daten vom Tvheadend Server abfragt.
 
 ## Sonstiges
