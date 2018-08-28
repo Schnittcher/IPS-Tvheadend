@@ -210,7 +210,7 @@ class IPS_Tvheadend extends IPSModule
         $RecordingStartTime = GetValue($this->GetIDForIdent('TVHNextRecordingStartTime'));
         $RecordingEndTime = GetValue($this->GetIDForIdent('TVHNextRecordingEndTime'));
 
-        $RecordingStartTime = (int)$RecordingStartTime+($this->ReadPropertyInteger('StartTimeRecording')*60);
+        $RecordingStartTime = (int)$RecordingStartTime-($this->ReadPropertyInteger('StartTimeRecording')*60);
         $RecordingEndTime = (int)$RecordingEndTime+($this->ReadPropertyInteger('EndTimeRecording')*60);
 
         if ($RecordingStartTime >= time()) {
