@@ -220,7 +220,7 @@ class IPS_Tvheadend extends IPSModule
             SetValue($this->GetIDForIdent('TVHActiveRecording'), true);
         }
 
-        if ($RecordingEndTime <= time()) {
+        if ($RecordingEndTime < time()) {
             $this->SendDebug(__FUNCTION__. "EndTime", "Aktuelle Zeit: ".time(),0);
             $this->SendDebug(__FUNCTION__. "EndTime", "Aufnahme Endzeit: ".$RecordingEndTime,0);
             SetValue($this->GetIDForIdent('TVHActiveRecording'), false);
