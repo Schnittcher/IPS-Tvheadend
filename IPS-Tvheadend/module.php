@@ -213,7 +213,10 @@ class IPS_Tvheadend extends IPSModule
         $RecordingStartTime = (int)$RecordingStartTime-($this->ReadPropertyInteger('StartTimeRecording')*60);
         $RecordingEndTime = (int)$RecordingEndTime+($this->ReadPropertyInteger('EndTimeRecording')*60);
 
-        if ($RecordingStartTime > time() and ($RecordingEndTime < time())) {
+        $this->SendDebug(__FUNCTION__, "Aufnahme Startzeit: ".date("d.m.Y - H:i", $RecordingStartTime),0);
+        $this->SendDebug(__FUNCTION__, "Aufnahme Endzeit: ".date("d.m.Y - H:i", $RecordingEndTime),0);
+
+        if ($RecordingStartTime < time() and ($RecordingEndTime > time())) {
             $this->SendDebug(__FUNCTION__, "Aktuelle Zeit: ".time(),0);
             $this->SendDebug(__FUNCTION__, "Aufnahme Startzeit: ".$RecordingEndTime,0);
             $this->SendDebug(__FUNCTION__, "Aufnahme Endzeit: ".$RecordingEndTime,0);
