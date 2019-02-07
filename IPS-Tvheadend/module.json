@@ -4,8 +4,8 @@
 	"type": 3,
 	"vendor": "",
 	"aliases": ["Tvheadend"],
-	"parentRequirements": [""],
-	"childRequirements": [""],
-	"implemented": [""],
+	"parentRequirements": [],
+	"childRequirements": [],
+	"implemented": [],
 	"prefix": "TVH"
 }
