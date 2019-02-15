@@ -4,7 +4,6 @@ require_once __DIR__ . '/libs/TVH.php';
 
 class IPS_Tvheadend extends IPSModule
 {
-
     public function Create()
     {
         //Never delete this line!
@@ -23,19 +22,19 @@ class IPS_Tvheadend extends IPSModule
         $this->RegisterPropertyInteger('UpdateTimerInterval', 20);
 
         $this->createVariablenProfiles();
-        $this->RegisterVariableBoolean('TVHStatus',$this->Translate('Server State'),'TVH.ServerStatus',1);
-        $this->RegisterVariableBoolean('TVHPower',$this->Translate('Power'),'~Switch',2);
-        $this->RegisterVariableInteger('TVHConnections',$this->Translate('Connections'),'',3);
-        $this->RegisterVariableInteger('TVHSubscriptions',$this->Translate('Subscriptions'),'',4);
-        $this->RegisterVariableString('TVHSubscriptionsInfo',$this->Translate('Subscription Infos'),'~HTMLBox',5);
-        $this->RegisterVariableString('TVHNextRecordingChannel',$this->Translate('Next Recording - Channel'),'',6);
-        $this->RegisterVariableString('TVHNextRecording',$this->Translate('Next Recording'),'',7);
-        $this->RegisterVariableInteger('TVHNextRecordingStartTime',$this->Translate('Next Recording - Starttime'),'~UnixTimestamp',8);
-        $this->RegisterVariableInteger('TVHNextRecordingEndTime',$this->Translate('Next Recording - Endtime'),'~UnixTimestamp',9);
-        $this->RegisterVariableBoolean('TVHActiveRecording',$this->Translate('Active Recording'),'TVH.ActiveRecording',10);
+        $this->RegisterVariableBoolean('TVHStatus', $this->Translate('Server State'), 'TVH.ServerStatus', 1);
+        $this->RegisterVariableBoolean('TVHPower', $this->Translate('Power'), '~Switch', 2);
+        $this->RegisterVariableInteger('TVHConnections', $this->Translate('Connections'), '', 3);
+        $this->RegisterVariableInteger('TVHSubscriptions', $this->Translate('Subscriptions'), '', 4);
+        $this->RegisterVariableString('TVHSubscriptionsInfo', $this->Translate('Subscription Infos'), '~HTMLBox', 5);
+        $this->RegisterVariableString('TVHNextRecordingChannel', $this->Translate('Next Recording - Channel'), '', 6);
+        $this->RegisterVariableString('TVHNextRecording', $this->Translate('Next Recording'), '', 7);
+        $this->RegisterVariableInteger('TVHNextRecordingStartTime', $this->Translate('Next Recording - Starttime'), '~UnixTimestamp', 8);
+        $this->RegisterVariableInteger('TVHNextRecordingEndTime', $this->Translate('Next Recording - Endtime'), '~UnixTimestamp', 9);
+        $this->RegisterVariableBoolean('TVHActiveRecording', $this->Translate('Active Recording'), 'TVH.ActiveRecording', 10);
 
         $this->RegisterTimer('TVH_UpdateActuallyStatus', 0, 'TVH_updateActuallyStatus($_IPS[\'TARGET\']);');
-   }
+    }
 
     public function ApplyChanges()
     {
@@ -44,7 +43,6 @@ class IPS_Tvheadend extends IPSModule
 
         $this->SetTimerInterval('TVH_UpdateActuallyStatus', $this->ReadPropertyInteger('UpdateTimerInterval') * 1000);
         $this->EnableAction('TVHPower');
-
     }
 
     private function createVariablenProfiles()
@@ -71,21 +69,21 @@ class IPS_Tvheadend extends IPSModule
 
     public function checkServerStatus()
     {
-        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
-        SetValue($this->GetIDForIdent('TVHStatus'),$TVH->getServerStatus());
-        SetValue($this->GetIDForIdent('TVHPower'),$TVH->getServerStatus());
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'), $this->ReadPropertyInteger('TvhPort'), $this->ReadPropertyString('TvhMac'), $this->ReadPropertyString('WebinterfaceUsername'), $this->ReadPropertyString('WebinterfacePassword'));
+        SetValue($this->GetIDForIdent('TVHStatus'), $TVH->getServerStatus());
+        SetValue($this->GetIDForIdent('TVHPower'), $TVH->getServerStatus());
     }
 
     public function wakeUP()
     {
-        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'), $this->ReadPropertyInteger('TvhPort'), $this->ReadPropertyString('TvhMac'), $this->ReadPropertyString('WebinterfaceUsername'), $this->ReadPropertyString('WebinterfacePassword'));
         $TVH->WakeOnLan($this->ReadPropertyString('Broadcast'));
     }
 
     public function shutdown()
     {
         set_include_path(__DIR__ . '/libs');
-        require_once(__DIR__.'/libs/Net/SSH2.php');
+        require_once __DIR__ . '/libs/Net/SSH2.php';
         $ssh = new Net_SSH2($this->ReadPropertyString('TvhIP'));
         if (!$ssh->login($this->ReadPropertyString('ServerUsername'), $this->ReadPropertyString('ServerPassword'))) {
             exit('Login Failed');
@@ -95,41 +93,40 @@ class IPS_Tvheadend extends IPSModule
 
     public function getNextRecording()
     {
-        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'), $this->ReadPropertyInteger('TvhPort'), $this->ReadPropertyString('TvhMac'), $this->ReadPropertyString('WebinterfaceUsername'), $this->ReadPropertyString('WebinterfacePassword'));
         $recordings = $TVH->getUpcomingRecordings();
 
         if (is_array($recordings)) {
-            if(count($recordings['entries']) > 0) {
+            if (count($recordings['entries']) > 0) {
                 $startTime = $recordings['entries'][0]['start'];
                 $endTime = $recordings['entries'][0]['stop'];
                 $channel = $recordings['entries'][0]['channelname'];
-                $title = $recordings['entries'][0]['title']['ger']. " - ". $recordings['entries'][0]['disp_subtitle'];
-                SetValue($this->GetIDForIdent('TVHNextRecordingChannel'),$channel);
-                SetValue($this->GetIDForIdent('TVHNextRecording'),$title);
-                SetValue($this->GetIDForIdent('TVHNextRecordingStartTime'),$startTime);
-                SetValue($this->GetIDForIdent('TVHNextRecordingEndTime'),$endTime);
+                $title = $recordings['entries'][0]['title']['ger'] . ' - ' . $recordings['entries'][0]['disp_subtitle'];
+                SetValue($this->GetIDForIdent('TVHNextRecordingChannel'), $channel);
+                SetValue($this->GetIDForIdent('TVHNextRecording'), $title);
+                SetValue($this->GetIDForIdent('TVHNextRecordingStartTime'), $startTime);
+                SetValue($this->GetIDForIdent('TVHNextRecordingEndTime'), $endTime);
             } else {
-                SetValue($this->GetIDForIdent('TVHNextRecordingChannel'),'');
-                SetValue($this->GetIDForIdent('TVHNextRecording'),'Keine Aufnahme geplant');
-                SetValue($this->GetIDForIdent('TVHNextRecordingStartTime'),0);
-                SetValue($this->GetIDForIdent('TVHNextRecordingEndTime'),0); 
+                SetValue($this->GetIDForIdent('TVHNextRecordingChannel'), '');
+                SetValue($this->GetIDForIdent('TVHNextRecording'), 'Keine Aufnahme geplant');
+                SetValue($this->GetIDForIdent('TVHNextRecordingStartTime'), 0);
+                SetValue($this->GetIDForIdent('TVHNextRecordingEndTime'), 0);
             }
         }
     }
 
     public function getConnections()
     {
-        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'), $this->ReadPropertyInteger('TvhPort'), $this->ReadPropertyString('TvhMac'), $this->ReadPropertyString('WebinterfaceUsername'), $this->ReadPropertyString('WebinterfacePassword'));
         $connections = $TVH->getConnections();
-        SetValue($this->GetIDForIdent('TVHConnections'),$connections['totalCount']);
+        SetValue($this->GetIDForIdent('TVHConnections'), $connections['totalCount']);
     }
-
 
     public function getSubscriptions()
     {
-        $TVH = new TVH($this->ReadPropertyString('TvhIP'),$this->ReadPropertyInteger('TvhPort'),$this->ReadPropertyString('TvhMac'),$this->ReadPropertyString('WebinterfaceUsername'),$this->ReadPropertyString('WebinterfacePassword'));
+        $TVH = new TVH($this->ReadPropertyString('TvhIP'), $this->ReadPropertyInteger('TvhPort'), $this->ReadPropertyString('TvhMac'), $this->ReadPropertyString('WebinterfaceUsername'), $this->ReadPropertyString('WebinterfacePassword'));
         $connections = $TVH->getSubscriptions();
-        SetValue($this->GetIDForIdent('TVHSubscriptions'),$connections['totalCount']);
+        SetValue($this->GetIDForIdent('TVHSubscriptions'), $connections['totalCount']);
 
         $htmlbox = '
         <style type="text/css">
@@ -159,42 +156,42 @@ class IPS_Tvheadend extends IPSModule
 		<tr>
 		<th>User</th>
 		<th>Host</th>
-		<th>'.$this->Translate('Starttime').'</th>
+		<th>' . $this->Translate('Starttime') . '</th>
 		<th>Client</th>
-		<th>'.$this->Translate('Channel').'</th>
-		<th>'.$this->Translate('Profile').'</th>
+		<th>' . $this->Translate('Channel') . '</th>
+		<th>' . $this->Translate('Profile') . '</th>
 		</tr>
 		<tr>';
         if (is_array($connections)) {
             foreach ($connections['entries'] as $connection) {
-                if (array_key_exists ('username', $connection)) {
-                    if (array_key_exists ('username', $connection)) {
-                        $htmlbox .= '<td class="odd">'.$connection['username'].'</td>';
+                if (array_key_exists('username', $connection)) {
+                    if (array_key_exists('username', $connection)) {
+                        $htmlbox .= '<td class="odd">' . $connection['username'] . '</td>';
                     } else {
                         $htmlbox .= '<td class="odd"> </td>';
                     }
-                    if (array_key_exists ('hostname', $connection)) {
-                        $htmlbox .= '<td>'.$connection['hostname'].'</td>';
+                    if (array_key_exists('hostname', $connection)) {
+                        $htmlbox .= '<td>' . $connection['hostname'] . '</td>';
                     } else {
                         $htmlbox .= '<td> </td>';
                     }
-                    if (array_key_exists ('start', $connection)) {
-                        $htmlbox .= '<td>'.date("d.m.Y H:i",$connection['start']).'</td>';
+                    if (array_key_exists('start', $connection)) {
+                        $htmlbox .= '<td>' . date('d.m.Y H:i', $connection['start']) . '</td>';
                     } else {
                         $htmlbox .= '<td> </td>';
                     }
-                    if (array_key_exists ('title', $connection)) {
-                        $htmlbox .= '<td>'.$connection['title'].'</td>';
+                    if (array_key_exists('title', $connection)) {
+                        $htmlbox .= '<td>' . $connection['title'] . '</td>';
                     } else {
                         $htmlbox .= '<td> </td>';
                     }
-                    if (array_key_exists ('channel', $connection)) {
-                        $htmlbox .= '<td>'.$connection['channel'].'</td>';
+                    if (array_key_exists('channel', $connection)) {
+                        $htmlbox .= '<td>' . $connection['channel'] . '</td>';
                     } else {
                         $htmlbox .= '<td> </td>';
                     }
-                    if (array_key_exists ('profile', $connection)) {
-                        $htmlbox .= '<td>'.$connection['profile'].'</td>';
+                    if (array_key_exists('profile', $connection)) {
+                        $htmlbox .= '<td>' . $connection['profile'] . '</td>';
                     } else {
                         $htmlbox .= '<td> </td>';
                     }
@@ -202,24 +199,25 @@ class IPS_Tvheadend extends IPSModule
                 }
             }
         }
-        $htmlbox .=	'</tbody></table>';
-        SetValue($this->GetIDForIdent('TVHSubscriptionsInfo'),$htmlbox);
+        $htmlbox .= '</tbody></table>';
+        SetValue($this->GetIDForIdent('TVHSubscriptionsInfo'), $htmlbox);
     }
 
-    private function checkActiveRecording() {
+    private function checkActiveRecording()
+    {
         $RecordingStartTime = GetValue($this->GetIDForIdent('TVHNextRecordingStartTime'));
         $RecordingEndTime = GetValue($this->GetIDForIdent('TVHNextRecordingEndTime'));
 
-        $RecordingStartTime = (int)$RecordingStartTime-($this->ReadPropertyInteger('StartTimeRecording')*60);
-        $RecordingEndTime = (int)$RecordingEndTime+($this->ReadPropertyInteger('EndTimeRecording')*60);
+        $RecordingStartTime = (int) $RecordingStartTime - ($this->ReadPropertyInteger('StartTimeRecording') * 60);
+        $RecordingEndTime = (int) $RecordingEndTime + ($this->ReadPropertyInteger('EndTimeRecording') * 60);
 
-        $this->SendDebug(__FUNCTION__, "Aufnahme Startzeit: ".date("d.m.Y - H:i", $RecordingStartTime),0);
-        $this->SendDebug(__FUNCTION__, "Aufnahme Endzeit: ".date("d.m.Y - H:i", $RecordingEndTime),0);
+        $this->SendDebug(__FUNCTION__, 'Aufnahme Startzeit: ' . date('d.m.Y - H:i', $RecordingStartTime), 0);
+        $this->SendDebug(__FUNCTION__, 'Aufnahme Endzeit: ' . date('d.m.Y - H:i', $RecordingEndTime), 0);
 
         if ($RecordingStartTime < time() and ($RecordingEndTime > time())) {
-            $this->SendDebug(__FUNCTION__, "Aktuelle Zeit: ".time(),0);
-            $this->SendDebug(__FUNCTION__, "Aufnahme Startzeit: ".$RecordingEndTime,0);
-            $this->SendDebug(__FUNCTION__, "Aufnahme Endzeit: ".$RecordingEndTime,0);
+            $this->SendDebug(__FUNCTION__, 'Aktuelle Zeit: ' . time(), 0);
+            $this->SendDebug(__FUNCTION__, 'Aufnahme Startzeit: ' . $RecordingEndTime, 0);
+            $this->SendDebug(__FUNCTION__, 'Aufnahme Endzeit: ' . $RecordingEndTime, 0);
             SetValue($this->GetIDForIdent('TVHActiveRecording'), true);
         } else {
             SetValue($this->GetIDForIdent('TVHActiveRecording'), false);
@@ -231,19 +229,19 @@ class IPS_Tvheadend extends IPSModule
         switch ($Ident) {
             case 'TVHPower':
                 if ($Value) {
-                        $this->SendDebug(__FUNCTION__.' TVH Wakeup', $Value, 0);
-                        $this->wakeUP();
-                        SetValue(IPS_GetObjectIDByIdent($Ident, $this->InstanceID), true);
-                    } else {
-                    $this->SendDebug(__FUNCTION__.' TVH Shutdown', $Value, 0);
-                        $this->shutdown();
-                        SetValue(IPS_GetObjectIDByIdent($Ident, $this->InstanceID), false);
-                    }
+                    $this->SendDebug(__FUNCTION__ . ' TVH Wakeup', $Value, 0);
+                    $this->wakeUP();
+                    SetValue(IPS_GetObjectIDByIdent($Ident, $this->InstanceID), true);
+                } else {
+                    $this->SendDebug(__FUNCTION__ . ' TVH Shutdown', $Value, 0);
+                    $this->shutdown();
+                    SetValue(IPS_GetObjectIDByIdent($Ident, $this->InstanceID), false);
+                }
                     break;
         }
     }
 
-        protected function RegisterProfileBoolean($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
+    protected function RegisterProfileBoolean($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
     {
         if (!IPS_VariableProfileExists($Name)) {
             IPS_CreateVariableProfile($Name, 0);
@@ -257,6 +255,7 @@ class IPS_Tvheadend extends IPSModule
         IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
         IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
     }
+
     protected function RegisterProfileBooleanEx($Name, $Icon, $Prefix, $Suffix, $Associations)
     {
         if (count($Associations) === 0) {
@@ -271,5 +270,4 @@ class IPS_Tvheadend extends IPSModule
             IPS_SetVariableProfileAssociation($Name, $Association[0], $Association[1], $Association[2], $Association[3]);
         }
     }
-
 }
