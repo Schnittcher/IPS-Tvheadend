@@ -23,16 +23,16 @@ class IPS_Tvheadend extends IPSModule
         $this->RegisterPropertyInteger('UpdateTimerInterval', 20);
 
         $this->createVariablenProfiles();
-        $this->RegisterVariableBoolean('TVHStatus','Server Status','TVH.ServerStatus',1);
-        $this->RegisterVariableBoolean('TVHPower','Power','~Switch',2);
-        $this->RegisterVariableInteger('TVHConnections','Verbindungen','',3);
-        $this->RegisterVariableInteger('TVHSubscriptions','Subscriptions','',4);
-        $this->RegisterVariableString('TVHSubscriptionsInfo','Subscription Infos','~HTMLBox',5);
-        $this->RegisterVariableString('TVHNextRecordingChannel','Nächste Aufnahme Kanal','',6);
-        $this->RegisterVariableString('TVHNextRecording','Nächste Aufnahme','',7);
-        $this->RegisterVariableInteger('TVHNextRecordingStartTime','Nächste Aufnahme Startzeit','~UnixTimestamp',8);
-        $this->RegisterVariableInteger('TVHNextRecordingEndTime','Nächste Aufnahme Endzeit','~UnixTimestamp',9);
-        $this->RegisterVariableBoolean('TVHActiveRecording','Aktive Aufnahme','TVH.ActiveRecording',10);
+        $this->RegisterVariableBoolean('TVHStatus',$this->Translate('Server State'),'TVH.ServerStatus',1);
+        $this->RegisterVariableBoolean('TVHPower',$this->Translate('Power'),'~Switch',2);
+        $this->RegisterVariableInteger('TVHConnections',$this->Translate('Connections'),'',3);
+        $this->RegisterVariableInteger('TVHSubscriptions',$this->Translate('Subscriptions'),'',4);
+        $this->RegisterVariableString('TVHSubscriptionsInfo',$this->Translate('Subscription Infos'),'~HTMLBox',5);
+        $this->RegisterVariableString('TVHNextRecordingChannel',$this->Translate('Next Recording - Channel'),'',6);
+        $this->RegisterVariableString('TVHNextRecording',$this->Translate('Next Recording'),'',7);
+        $this->RegisterVariableInteger('TVHNextRecordingStartTime',$this->Translate('Next Recording - Starttime'),'~UnixTimestamp',8);
+        $this->RegisterVariableInteger('TVHNextRecordingEndTime',$this->Translate('Next Recording - Endtime'),'~UnixTimestamp',9);
+        $this->RegisterVariableBoolean('TVHActiveRecording',$this->Translate('Active Recording'),'TVH.ActiveRecording',10);
 
         $this->RegisterTimer('TVH_UpdateActuallyStatus', 0, 'TVH_updateActuallyStatus($_IPS[\'TARGET\']);');
    }
@@ -159,10 +159,10 @@ class IPS_Tvheadend extends IPSModule
 		<tr>
 		<th>User</th>
 		<th>Host</th>
-		<th>Startzeit</th>
+		<th>'.$this->Translate('Starttime').'</th>
 		<th>Client</th>
-		<th>Channel</th>
-		<th>Profil</th>
+		<th>'.$this->Translate('Channel').'</th>
+		<th>'.$this->Translate('Profile').'</th>
 		</tr>
 		<tr>';
         if (is_array($connections)) {
@@ -250,7 +250,7 @@ class IPS_Tvheadend extends IPSModule
         } else {
             $profile = IPS_GetVariableProfile($Name);
             if ($profile['ProfileType'] != 0) {
-                throw new Exception('Variable profile type does not match for profile ' . $Name);
+                throw new Exception('Variable profile type does not match for profile' . $Name);
             }
         }
         IPS_SetVariableProfileIcon($Name, $Icon);

@@ -1,0 +1,33 @@
+{
+  "translations": {
+    "de": {
+      "Server State": "Server Status",
+      "Power": "Power",
+      "Connections": "Verbindungen",
+      "Subscriptions": "Abonnements",
+      "Subscription Infos": "Abonnements Infos",
+      "Next Recording - Channel": "Nächste Aufnahme - Kanal",
+      "Next Recording": "Nächste Aufnahme",
+      "Next Recording - Starttime": "Nächste Aufnahme - Startzeit",
+      "Next Recording - Endtime": "Nächste Aufnahme - Endzeit",
+      "Active Recording": "Aktive Aufnahme",
+      "Variable profile type does not match for profile": "Der Profiltyp der Variablen stimmt nicht mit dem Profil überein",
+      "Starttime": "Startzeit",
+      "Channel": "Kanal",
+      "Profile": "Profil",
+      "TV Headend Settings": "TV Headend Einstellungen",
+      "IP address - TVH Servers": "IP-Adresse - TVH-Server",
+      "Port - TVH Webinterface": "Port - TVH Webinterface",
+      "Mac address - TVH Servers": "Mac-Adresse - TVH-Server",
+      "Broadcast address of the network": "Broadcast Adresse des Netzwerkes",
+      "Root User - TVHServers": "Root Benutzer - TVHServers",
+      "Root Password - TVH Servers": "Root Passwort - TVH Servers",
+      "Admin User - Webinterface": "Admin Benutzer - Webinterface",
+      "Admin Password - Webinterface": "Admin Passwort - Webinterface",
+      "Lead time recording": "Vorlaufzeit Aufnahme",
+      "Minutes" : "Minuten",
+      "Follow-up time recrodring": "Nachlaufzeit Aufnahme",
+      "Seconds": "Sekunden"
+    }
+  }
+}

@@ -6,45 +6,45 @@
       },
       { "type": "ValidationTextBox",
         "name": "TvhIP",
-        "caption": "IP Adresse des TVH servers"
+        "caption": "IP address - TVH Servers"
       },
       { "type": "NumberSpinner",
         "name": "TvhPort",
-        "caption": "Port des TVH Webinterfaces"
+        "caption": "Port - TVH Webinterfaces"
       },
       { "type": "ValidationTextBox",
         "name": "TvhMac",
-        "caption": "Mac Adresse des TVH Servers"
+        "caption": "Mac address - TVH Servers"
       },
       { "type": "ValidationTextBox",
         "name": "Broadcast",
-        "caption": "Broadcast Adresse des Netzwerkes"
+        "caption": "Broadcast address of the network"
       },
       { "type": "ValidationTextBox",
         "name": "ServerUsername",
-        "caption": "Root Benutzer des Servers"
+        "caption": "Root User - TVHServers"
       },
       { "type": "PasswordTextBox",
         "name": "ServerPassword",
-        "caption": "Root Passwort des Servers"
+        "caption": "Root Password - TVH Servers"
       },
       { "type": "ValidationTextBox",
         "name": "WebinterfaceUsername",
-        "caption": "Admin Benutzer für das Webinterface"
+        "caption": "Admin Benutzer - Webinterface"
       },
       { "type": "PasswordTextBox",
         "name": "WebinterfacePassword",
-        "caption": "Passwort für das Webinterface"
+        "caption": "Admin Password - Webinterface"
       },
       { "type": "Label",
-        "caption": "Vorlaufzeit Aufname"
+        "caption": "Lead time recording"
       },
       { "type": "IntervalBox",
         "name": "StartTimeRecording",
         "caption": "Minutes"
       },
       { "type": "Label",
-        "caption": "Nachlaufzeit Aufname"
+        "caption": "Follow-up time recrodring"
       },
       { "type": "IntervalBox",
         "name": "EndTimeRecording",
