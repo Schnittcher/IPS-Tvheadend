@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Random Number Generator
+ * Random Number Generator.
  *
  * The idea behind this function is that it can be easily replaced with your own crypt_random_string()
  * function. eg. maybe you have a better source of entropy for creating the initial states or whatever.
@@ -36,10 +36,11 @@
  * THE SOFTWARE.
  *
  * @category  Crypt
- * @package   Crypt_Random
+ *
  * @author    Jim Wigginton <terrafrost@php.net>
  * @copyright 2007 Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
+ *
  * @link      http://phpseclib.sourceforge.net
  */
 
@@ -47,7 +48,7 @@
 // have phpseclib as a requirement as well. if you're developing such a program you may encounter
 // a "Cannot redeclare crypt_random_string()" error.
 if (!function_exists('crypt_random_string')) {
-    /**
+    /*
      * "Is Windows" test
      *
      * @access private
@@ -62,8 +63,8 @@ if (!function_exists('crypt_random_string')) {
      * eg. for RSA key generation.
      *
      * @param int $length
+     *
      * @return string
-     * @access public
      */
     function crypt_random_string($length)
     {
@@ -258,7 +259,7 @@ if (!function_exists('crypt_random_string')) {
             $i = $crypto->encrypt(microtime()); // strlen(microtime()) == 21
             $r = $crypto->encrypt($i ^ $v); // strlen($v) == 20
             $v = $crypto->encrypt($r ^ $i); // strlen($r) == 20
-            $result.= $r;
+            $result .= $r;
         }
         return substr($result, 0, $length);
     }
@@ -266,13 +267,12 @@ if (!function_exists('crypt_random_string')) {
 
 if (!function_exists('phpseclib_safe_serialize')) {
     /**
-     * Safely serialize variables
+     * Safely serialize variables.
      *
      * If a class has a private __sleep() method it'll give a fatal error on PHP 5.2 and earlier.
      * PHP 5.3 will emit a warning.
      *
      * @param mixed $arr
-     * @access public
      */
     function phpseclib_safe_serialize(&$arr)
     {
@@ -307,8 +307,8 @@ if (!function_exists('phpseclib_resolve_include_path')) {
      * PHP 5.3.2) with fallback implementation for earlier PHP versions.
      *
      * @param string $filename
+     *
      * @return string|false
-     * @access public
      */
     function phpseclib_resolve_include_path($filename)
     {
