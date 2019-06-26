@@ -213,13 +213,13 @@ class System_SSH_Agent_Identity
         $packet = pack('CNa*Na*N', SYSTEM_SSH_AGENTC_SIGN_REQUEST, strlen($this->key_blob), $this->key_blob, strlen($message), $message, 0);
         $packet = pack('Na*', strlen($packet), $packet);
         if (strlen($packet) != fwrite($this->fsock, $packet)) {
-            user_error('Connection closed during signing');
+            trigger_error('Connection closed during signing');
         }
 
         $length = current(unpack('N', fread($this->fsock, 4)));
         $type = ord(fread($this->fsock, 1));
         if ($type != SYSTEM_SSH_AGENT_SIGN_RESPONSE) {
-            user_error('Unable to retreive signature');
+            trigger_error('Unable to retreive signature');
         }
 
         $signature_blob = fread($this->fsock, $length - 1);
@@ -279,13 +279,13 @@ class System_SSH_Agent
                 $address = $_ENV['SSH_AUTH_SOCK'];
                 break;
             default:
-                user_error('SSH_AUTH_SOCK not found');
+                trigger_error('SSH_AUTH_SOCK not found');
                 return false;
         }
 
         $this->fsock = fsockopen('unix://' . $address, 0, $errno, $errstr);
         if (!$this->fsock) {
-            user_error("Unable to connect to ssh-agent (Error $errno: $errstr)");
+            trigger_error("Unable to connect to ssh-agent (Error $errno: $errstr)");
         }
     }
 
@@ -315,13 +315,13 @@ class System_SSH_Agent
 
         $packet = pack('NC', 1, SYSTEM_SSH_AGENTC_REQUEST_IDENTITIES);
         if (strlen($packet) != fwrite($this->fsock, $packet)) {
-            user_error('Connection closed while requesting identities');
+            trigger_error('Connection closed while requesting identities');
         }
 
         $length = current(unpack('N', fread($this->fsock, 4)));
         $type = ord(fread($this->fsock, 1));
         if ($type != SYSTEM_SSH_AGENT_IDENTITIES_ANSWER) {
-            user_error('Unable to request identities');
+            trigger_error('Unable to request identities');
         }
 
         $identities = array();
@@ -455,7 +455,7 @@ class System_SSH_Agent
         }
 
         if (strlen($this->socket_buffer) != fwrite($this->fsock, $this->socket_buffer)) {
-            user_error('Connection closed attempting to forward data to SSH agent');
+            trigger_error('Connection closed attempting to forward data to SSH agent');
         }
 
         $this->socket_buffer = '';

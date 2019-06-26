@@ -235,7 +235,7 @@ if (!function_exists('crypt_random_string')) {
                     $crypto = new Crypt_RC4();
                     break;
                 default:
-                    user_error('crypt_random_string requires at least one symmetric cipher be loaded');
+                    trigger_error('crypt_random_string requires at least one symmetric cipher be loaded');
                     return false;
             }
 

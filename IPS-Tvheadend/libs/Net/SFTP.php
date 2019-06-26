@@ -536,7 +536,7 @@ class Net_SFTP extends Net_SSH2
 
         $response = $this->_get_sftp_packet();
         if ($this->packet_type != NET_SFTP_VERSION) {
-            user_error('Expected SSH_FXP_VERSION');
+            trigger_error('Expected SSH_FXP_VERSION');
             return false;
         }
 
@@ -746,7 +746,7 @@ class Net_SFTP extends Net_SSH2
                     $this->_logError($response);
                     return false;
                 default:
-                    user_error('Expected SSH_FXP_NAME or SSH_FXP_STATUS');
+                    trigger_error('Expected SSH_FXP_NAME or SSH_FXP_STATUS');
                     return false;
             }
         }
@@ -822,7 +822,7 @@ class Net_SFTP extends Net_SSH2
                 $this->_logError($response);
                 return false;
             default:
-                user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
+                trigger_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
                 return false;
         }
 
@@ -956,7 +956,7 @@ class Net_SFTP extends Net_SSH2
                 $this->_logError($response);
                 return false;
             default:
-                user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
+                trigger_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
                 return false;
         }
 
@@ -1023,7 +1023,7 @@ class Net_SFTP extends Net_SSH2
                     }
                     break 2;
                 default:
-                    user_error('Expected SSH_FXP_NAME or SSH_FXP_STATUS');
+                    trigger_error('Expected SSH_FXP_NAME or SSH_FXP_STATUS');
                     return false;
             }
         }
@@ -1400,7 +1400,7 @@ class Net_SFTP extends Net_SSH2
                 return false;
         }
 
-        user_error('Expected SSH_FXP_ATTRS or SSH_FXP_STATUS');
+        trigger_error('Expected SSH_FXP_ATTRS or SSH_FXP_STATUS');
         return false;
     }
 
@@ -1463,7 +1463,7 @@ class Net_SFTP extends Net_SSH2
                 $this->_logError($response);
                 break;
             default:
-                user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
+                trigger_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
                 return false;
         }
 
@@ -1555,7 +1555,7 @@ class Net_SFTP extends Net_SSH2
                 return false;
         }
 
-        user_error('Expected SSH_FXP_ATTRS or SSH_FXP_STATUS');
+        trigger_error('Expected SSH_FXP_ATTRS or SSH_FXP_STATUS');
         return false;
     }
 
@@ -1603,7 +1603,7 @@ class Net_SFTP extends Net_SSH2
         */
         $response = $this->_get_sftp_packet();
         if ($this->packet_type != NET_SFTP_STATUS) {
-            user_error('Expected SSH_FXP_STATUS');
+            trigger_error('Expected SSH_FXP_STATUS');
             return false;
         }
 
@@ -1718,7 +1718,7 @@ class Net_SFTP extends Net_SSH2
                 $this->_logError($response);
                 return false;
             default:
-                user_error('Expected SSH_FXP_NAME or SSH_FXP_STATUS');
+                trigger_error('Expected SSH_FXP_NAME or SSH_FXP_STATUS');
                 return false;
         }
 
@@ -1764,7 +1764,7 @@ class Net_SFTP extends Net_SSH2
 
         $response = $this->_get_sftp_packet();
         if ($this->packet_type != NET_SFTP_STATUS) {
-            user_error('Expected SSH_FXP_STATUS');
+            trigger_error('Expected SSH_FXP_STATUS');
             return false;
         }
 
@@ -1830,7 +1830,7 @@ class Net_SFTP extends Net_SSH2
 
         $response = $this->_get_sftp_packet();
         if ($this->packet_type != NET_SFTP_STATUS) {
-            user_error('Expected SSH_FXP_STATUS');
+            trigger_error('Expected SSH_FXP_STATUS');
             return false;
         }
 
@@ -1870,7 +1870,7 @@ class Net_SFTP extends Net_SSH2
 
         $response = $this->_get_sftp_packet();
         if ($this->packet_type != NET_SFTP_STATUS) {
-            user_error('Expected SSH_FXP_STATUS');
+            trigger_error('Expected SSH_FXP_STATUS');
             return false;
         }
 
@@ -1984,7 +1984,7 @@ class Net_SFTP extends Net_SSH2
                 $this->_logError($response);
                 return false;
             default:
-                user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
+                trigger_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
                 return false;
         }
 
@@ -1993,7 +1993,7 @@ class Net_SFTP extends Net_SSH2
         switch (true) {
             case $mode & NET_SFTP_CALLBACK:
                 if (!is_callable($data)) {
-                    user_error('$data should be is_callable if you set NET_SFTP_CALLBACK flag');
+                    trigger_error('$data should be is_callable if you set NET_SFTP_CALLBACK flag');
                 }
                 $dataCallback = $data;
                 // do nothing
@@ -2011,7 +2011,7 @@ class Net_SFTP extends Net_SSH2
                 break;
             case $mode & NET_SFTP_LOCAL_FILE:
                 if (!is_file($data)) {
-                    user_error("$data is not a valid file");
+                    trigger_error("$data is not a valid file");
                     return false;
                 }
                 $fp = @fopen($data, 'rb');
@@ -2108,7 +2108,7 @@ class Net_SFTP extends Net_SSH2
         while ($i--) {
             $response = $this->_get_sftp_packet();
             if ($this->packet_type != NET_SFTP_STATUS) {
-                user_error('Expected SSH_FXP_STATUS');
+                trigger_error('Expected SSH_FXP_STATUS');
                 return false;
             }
 
@@ -2142,7 +2142,7 @@ class Net_SFTP extends Net_SSH2
         //  -- http://tools.ietf.org/html/draft-ietf-secsh-filexfer-13#section-8.1.3
         $response = $this->_get_sftp_packet();
         if ($this->packet_type != NET_SFTP_STATUS) {
-            user_error('Expected SSH_FXP_STATUS');
+            trigger_error('Expected SSH_FXP_STATUS');
             return false;
         }
 
@@ -2199,7 +2199,7 @@ class Net_SFTP extends Net_SSH2
                 $this->_logError($response);
                 return false;
             default:
-                user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
+                trigger_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
                 return false;
         }
 
@@ -2278,7 +2278,7 @@ class Net_SFTP extends Net_SSH2
                         if ($fclose_check) {
                             fclose($fp);
                         }
-                        user_error('Expected SSH_FX_DATA or SSH_FXP_STATUS');
+                        trigger_error('Expected SSH_FX_DATA or SSH_FXP_STATUS');
                 }
                 $response = null;
             }
@@ -2343,7 +2343,7 @@ class Net_SFTP extends Net_SSH2
 
         $response = $this->_get_sftp_packet();
         if ($this->packet_type != NET_SFTP_STATUS) {
-            user_error('Expected SSH_FXP_STATUS');
+            trigger_error('Expected SSH_FXP_STATUS');
             return false;
         }
 
@@ -2531,7 +2531,7 @@ class Net_SFTP extends Net_SSH2
             case NET_SFTP_STATUS: // presumably SSH_FX_NO_SUCH_FILE or SSH_FX_PERMISSION_DENIED
                 return false;
             default:
-                user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
+                trigger_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
                 return false;
         }
     }
@@ -2559,7 +2559,7 @@ class Net_SFTP extends Net_SSH2
             case NET_SFTP_STATUS: // presumably SSH_FX_NO_SUCH_FILE or SSH_FX_PERMISSION_DENIED
                 return false;
             default:
-                user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
+                trigger_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS');
                 return false;
         }
     }
@@ -2771,7 +2771,7 @@ class Net_SFTP extends Net_SSH2
 
         $response = $this->_get_sftp_packet();
         if ($this->packet_type != NET_SFTP_STATUS) {
-            user_error('Expected SSH_FXP_STATUS');
+            trigger_error('Expected SSH_FXP_STATUS');
             return false;
         }
 
@@ -2807,7 +2807,7 @@ class Net_SFTP extends Net_SSH2
     {
         $attr = array();
         if (strlen($response) < 4) {
-            user_error('Malformed file attributes');
+            trigger_error('Malformed file attributes');
             return array();
         }
         extract(unpack('Nflags', $this->_string_shift($response, 4)));
@@ -2825,14 +2825,14 @@ class Net_SFTP extends Net_SSH2
                     break;
                 case NET_SFTP_ATTR_UIDGID: // 0x00000002 (SFTPv3 only)
                     if (strlen($response) < 8) {
-                        user_error('Malformed file attributes');
+                        trigger_error('Malformed file attributes');
                         return $attr;
                     }
                     $attr += unpack('Nuid/Ngid', $this->_string_shift($response, 8));
                     break;
                 case NET_SFTP_ATTR_PERMISSIONS: // 0x00000004
                     if (strlen($response) < 4) {
-                        user_error('Malformed file attributes');
+                        trigger_error('Malformed file attributes');
                         return $attr;
                     }
                     $attr += unpack('Npermissions', $this->_string_shift($response, 4));
@@ -2846,26 +2846,26 @@ class Net_SFTP extends Net_SSH2
                     break;
                 case NET_SFTP_ATTR_ACCESSTIME: // 0x00000008
                     if (strlen($response) < 8) {
-                        user_error('Malformed file attributes');
+                        trigger_error('Malformed file attributes');
                         return $attr;
                     }
                     $attr += unpack('Natime/Nmtime', $this->_string_shift($response, 8));
                     break;
                 case NET_SFTP_ATTR_EXTENDED: // 0x80000000
                     if (strlen($response) < 4) {
-                        user_error('Malformed file attributes');
+                        trigger_error('Malformed file attributes');
                         return $attr;
                     }
                     extract(unpack('Ncount', $this->_string_shift($response, 4)));
                     for ($i = 0; $i < $count; $i++) {
                         if (strlen($response) < 4) {
-                            user_error('Malformed file attributes');
+                            trigger_error('Malformed file attributes');
                             return $attr;
                         }
                         extract(unpack('Nlength', $this->_string_shift($response, 4)));
                         $key = $this->_string_shift($response, $length);
                         if (strlen($response) < 4) {
-                            user_error('Malformed file attributes');
+                            trigger_error('Malformed file attributes');
                             return $attr;
                         }
                         extract(unpack('Nlength', $this->_string_shift($response, 4)));
