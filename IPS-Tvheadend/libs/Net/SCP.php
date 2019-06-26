@@ -195,7 +195,7 @@ class Net_SCP
             $size = strlen($data);
         } else {
             if (!is_file($data)) {
-                user_error("$data is not a valid file", E_USER_NOTICE);
+                trigger_error("$data is not a valid file", E_USER_NOTICE);
                 return false;
             }
 
@@ -342,7 +342,7 @@ class Net_SCP
                             $this->ssh->bitmap = 0;
                             return false;
                         default:
-                            user_error('Unknown packet received', E_USER_NOTICE);
+                            trigger_error('Unknown packet received', E_USER_NOTICE);
                             return false;
                     }
                 }
