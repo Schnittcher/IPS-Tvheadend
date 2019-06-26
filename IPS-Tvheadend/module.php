@@ -85,8 +85,10 @@ class IPS_Tvheadend extends IPSModule
         set_include_path(__DIR__ . '/libs');
         require_once __DIR__ . '/libs/Net/SSH2.php';
         $ssh = new Net_SSH2($this->ReadPropertyString('TvhIP'));
-        if (!$ssh->login($this->ReadPropertyString('ServerUsername'), $this->ReadPropertyString('ServerPassword'))) {
-            exit('Login Failed');
+
+        if (@!$ssh->login($this->ReadPropertyString('ServerUsername'), $this->ReadPropertyString('ServerPassword'))) {
+            IPS_LogMessage('Tvheadend','Login failed - Server offline?');
+            return;
         }
         @$ssh->exec('shutdown -h now');
     }
