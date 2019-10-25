@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/libs/TVH.php';
 
 class IPS_Tvheadend extends IPSModule
@@ -43,19 +45,6 @@ class IPS_Tvheadend extends IPSModule
 
         $this->SetTimerInterval('TVH_UpdateActuallyStatus', $this->ReadPropertyInteger('UpdateTimerInterval') * 1000);
         $this->EnableAction('TVHPower');
-    }
-
-    private function createVariablenProfiles()
-    {
-        //Online / Offline Profile
-        $this->RegisterProfileBooleanEx('TVH.ServerStatus', 'Network', '', '', array(
-            array(false, 'Offline',  '', 0xFF0000),
-            array(true, 'Online',  '', 0x00FF00)
-        ));
-        $this->RegisterProfileBooleanEx('TVH.ActiveRecording', 'TV', '', '', array(
-            array(false, 'Nein',  '', 0xFF0000),
-            array(true, 'Ja',  '', 0x00FF00)
-        ));
     }
 
     public function updateActuallyStatus()
@@ -205,27 +194,6 @@ class IPS_Tvheadend extends IPSModule
         SetValue($this->GetIDForIdent('TVHSubscriptionsInfo'), $htmlbox);
     }
 
-    private function checkActiveRecording()
-    {
-        $RecordingStartTime = GetValue($this->GetIDForIdent('TVHNextRecordingStartTime'));
-        $RecordingEndTime = GetValue($this->GetIDForIdent('TVHNextRecordingEndTime'));
-
-        $RecordingStartTime = (int) $RecordingStartTime - ($this->ReadPropertyInteger('StartTimeRecording') * 60);
-        $RecordingEndTime = (int) $RecordingEndTime + ($this->ReadPropertyInteger('EndTimeRecording') * 60);
-
-        $this->SendDebug(__FUNCTION__, 'Aufnahme Startzeit: ' . date('d.m.Y - H:i', $RecordingStartTime), 0);
-        $this->SendDebug(__FUNCTION__, 'Aufnahme Endzeit: ' . date('d.m.Y - H:i', $RecordingEndTime), 0);
-
-        if ($RecordingStartTime < time() and ($RecordingEndTime > time())) {
-            $this->SendDebug(__FUNCTION__, 'Aktuelle Zeit: ' . time(), 0);
-            $this->SendDebug(__FUNCTION__, 'Aufnahme Startzeit: ' . $RecordingEndTime, 0);
-            $this->SendDebug(__FUNCTION__, 'Aufnahme Endzeit: ' . $RecordingEndTime, 0);
-            SetValue($this->GetIDForIdent('TVHActiveRecording'), true);
-        } else {
-            SetValue($this->GetIDForIdent('TVHActiveRecording'), false);
-        }
-    }
-
     public function RequestAction($Ident, $Value)
     {
         switch ($Ident) {
@@ -270,6 +238,40 @@ class IPS_Tvheadend extends IPSModule
         $this->RegisterProfileBoolean($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, 0);
         foreach ($Associations as $Association) {
             IPS_SetVariableProfileAssociation($Name, $Association[0], $Association[1], $Association[2], $Association[3]);
+        }
+    }
+
+    private function createVariablenProfiles()
+    {
+        //Online / Offline Profile
+        $this->RegisterProfileBooleanEx('TVH.ServerStatus', 'Network', '', '', [
+            [false, 'Offline',  '', 0xFF0000],
+            [true, 'Online',  '', 0x00FF00]
+        ]);
+        $this->RegisterProfileBooleanEx('TVH.ActiveRecording', 'TV', '', '', [
+            [false, 'Nein',  '', 0xFF0000],
+            [true, 'Ja',  '', 0x00FF00]
+        ]);
+    }
+
+    private function checkActiveRecording()
+    {
+        $RecordingStartTime = GetValue($this->GetIDForIdent('TVHNextRecordingStartTime'));
+        $RecordingEndTime = GetValue($this->GetIDForIdent('TVHNextRecordingEndTime'));
+
+        $RecordingStartTime = (int) $RecordingStartTime - ($this->ReadPropertyInteger('StartTimeRecording') * 60);
+        $RecordingEndTime = (int) $RecordingEndTime + ($this->ReadPropertyInteger('EndTimeRecording') * 60);
+
+        $this->SendDebug(__FUNCTION__, 'Aufnahme Startzeit: ' . date('d.m.Y - H:i', $RecordingStartTime), 0);
+        $this->SendDebug(__FUNCTION__, 'Aufnahme Endzeit: ' . date('d.m.Y - H:i', $RecordingEndTime), 0);
+
+        if ($RecordingStartTime < time() && ($RecordingEndTime > time())) {
+            $this->SendDebug(__FUNCTION__, 'Aktuelle Zeit: ' . time(), 0);
+            $this->SendDebug(__FUNCTION__, 'Aufnahme Startzeit: ' . $RecordingEndTime, 0);
+            $this->SendDebug(__FUNCTION__, 'Aufnahme Endzeit: ' . $RecordingEndTime, 0);
+            SetValue($this->GetIDForIdent('TVHActiveRecording'), true);
+        } else {
+            SetValue($this->GetIDForIdent('TVHActiveRecording'), false);
         }
     }
 }
