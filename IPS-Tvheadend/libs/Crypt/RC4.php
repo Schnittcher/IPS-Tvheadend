@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Pure-PHP implementation of RC4.
  *
@@ -70,13 +72,13 @@ if (!class_exists('Crypt_Base')) {
     include_once 'Base.php';
 }
 
-/**#@+
+/*#@+
  * @access private
  * @see self::_crypt()
  */
 define('CRYPT_RC4_ENCRYPT', 0);
 define('CRYPT_RC4_DECRYPT', 1);
-/**#@-*/
+/*#@-*/
 
 /**
  * Pure-PHP implementation of RC4.
@@ -311,12 +313,12 @@ class Crypt_RC4 extends Crypt_Base
             $keyStream[$j] = $temp;
         }
 
-        $this->stream = array();
-        $this->stream[CRYPT_RC4_DECRYPT] = $this->stream[CRYPT_RC4_ENCRYPT] = array(
+        $this->stream = [];
+        $this->stream[CRYPT_RC4_DECRYPT] = $this->stream[CRYPT_RC4_ENCRYPT] = [
             0, // index $i
             0, // index $j
             $keyStream
-        );
+        ];
     }
 
     /**

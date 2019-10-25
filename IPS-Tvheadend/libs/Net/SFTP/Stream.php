@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * SFTP Stream Wrapper.
  *
@@ -116,6 +118,55 @@ class Net_SFTP_Stream
     public $notification;
 
     /**
+     * The Constructor.
+     */
+    public function __construct()
+    {
+        if (defined('NET_SFTP_STREAM_LOGGING')) {
+            echo "__construct()\r\n";
+        }
+
+        if (!class_exists('Net_SFTP')) {
+            include_once 'Net/SFTP.php';
+        }
+    }
+
+    /**
+     * __call Magic Method.
+     *
+     * When you're utilizing an SFTP stream you're not calling the methods in this class directly - PHP is calling them for you.
+     * Which kinda begs the question... what methods is PHP calling and what parameters is it passing to them? This function
+     * lets you figure that out.
+     *
+     * If NET_SFTP_STREAM_LOGGING is defined all calls will be output on the screen and then (regardless of whether or not
+     * NET_SFTP_STREAM_LOGGING is enabled) the parameters will be passed through to the appropriate method.
+     *
+     * @param string
+     * @param array
+     *
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        if (defined('NET_SFTP_STREAM_LOGGING')) {
+            echo $name . '(';
+            $last = count($arguments) - 1;
+            foreach ($arguments as $i => $argument) {
+                var_export($argument);
+                if ($i != $last) {
+                    echo ',';
+                }
+            }
+            echo ")\r\n";
+        }
+        $name = '_' . $name;
+        if (!method_exists($this, $name)) {
+            return false;
+        }
+        return call_user_func_array([$this, $name], $arguments);
+    }
+
+    /**
      * Registers this class as a URL wrapper.
      *
      * @param string $protocol The wrapper name to be registered.
@@ -129,20 +180,6 @@ class Net_SFTP_Stream
         }
         $class = function_exists('get_called_class') ? get_called_class() : __CLASS__;
         return stream_wrapper_register($protocol, $class);
-    }
-
-    /**
-     * The Constructor.
-     */
-    public function __construct()
-    {
-        if (defined('NET_SFTP_STREAM_LOGGING')) {
-            echo "__construct()\r\n";
-        }
-
-        if (!class_exists('Net_SFTP')) {
-            include_once 'Net/SFTP.php';
-        }
     }
 
     /**
@@ -160,7 +197,7 @@ class Net_SFTP_Stream
     public function _parse_path($path)
     {
         $orig = $path;
-        extract(parse_url($path) + array('port' => 22));
+        extract(parse_url($path) + ['port' => 22]);
         if (isset($query)) {
             $path .= '?' . $query;
         } elseif (preg_match('/(\?|\?#)$/', $orig)) {
@@ -233,7 +270,7 @@ class Net_SFTP_Stream
                        i've opted not to do that, however, since the ftp wrapper gives the line
                        on which the fopen occurred as the line number - not the line that the
                        user_error is on.
-                    */
+                     */
                     call_user_func($this->notification, STREAM_NOTIFY_CONNECT, STREAM_NOTIFY_SEVERITY_INFO, '', 0, 0, 0);
                     call_user_func($this->notification, STREAM_NOTIFY_AUTH_REQUIRED, STREAM_NOTIFY_SEVERITY_INFO, '', 0, 0, 0);
                     if (!$this->sftp->login($user, $pass)) {
@@ -753,41 +790,6 @@ class Net_SFTP_Stream
      */
     public function _stream_close()
     {
-    }
-
-    /**
-     * __call Magic Method.
-     *
-     * When you're utilizing an SFTP stream you're not calling the methods in this class directly - PHP is calling them for you.
-     * Which kinda begs the question... what methods is PHP calling and what parameters is it passing to them? This function
-     * lets you figure that out.
-     *
-     * If NET_SFTP_STREAM_LOGGING is defined all calls will be output on the screen and then (regardless of whether or not
-     * NET_SFTP_STREAM_LOGGING is enabled) the parameters will be passed through to the appropriate method.
-     *
-     * @param string
-     * @param array
-     *
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        if (defined('NET_SFTP_STREAM_LOGGING')) {
-            echo $name . '(';
-            $last = count($arguments) - 1;
-            foreach ($arguments as $i => $argument) {
-                var_export($argument);
-                if ($i != $last) {
-                    echo ',';
-                }
-            }
-            echo ")\r\n";
-        }
-        $name = '_' . $name;
-        if (!method_exists($this, $name)) {
-            return false;
-        }
-        return call_user_func_array(array($this, $name), $arguments);
     }
 }
 

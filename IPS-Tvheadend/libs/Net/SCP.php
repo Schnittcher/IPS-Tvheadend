@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Pure-PHP implementation of SCP.
  *
@@ -50,7 +52,7 @@
  * @link      http://phpseclib.sourceforge.net
  */
 
-/**#@+
+/*#@+
  * @access public
  * @see self::put()
  */
@@ -62,9 +64,9 @@ define('NET_SCP_LOCAL_FILE', 1);
  * Reads data from a string.
  */
 define('NET_SCP_STRING', 2);
-/**#@-*/
+/*#@-*/
 
-/**#@+
+/*#@+
  * @access private
  * @see self::_send()
  * @see self::_receive()
@@ -77,7 +79,7 @@ define('NET_SCP_SSH1', 1);
  * SSH2 is being used.
  */
 define('NET_SCP_SSH2', 2);
-/**#@-*/
+/*#@-*/
 
 /**
  * Pure-PHP implementations of SCP.

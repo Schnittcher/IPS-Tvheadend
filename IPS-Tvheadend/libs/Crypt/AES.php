@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Pure-PHP implementation of AES.
  *
@@ -73,7 +75,7 @@ if (!class_exists('Crypt_Rijndael')) {
     include_once 'Rijndael.php';
 }
 
-/**#@+
+/*#@+
  * @access public
  * @see self::encrypt()
  * @see self::decrypt()
@@ -110,7 +112,7 @@ define('CRYPT_AES_MODE_CFB', CRYPT_MODE_CFB);
  * @link http://en.wikipedia.org/wiki/Block_cipher_modes_of_operation#Output_feedback_.28OFB.29
  */
 define('CRYPT_AES_MODE_OFB', CRYPT_MODE_OFB);
-/**#@-*/
+/*#@-*/
 
 /**
  * Pure-PHP implementation of AES.

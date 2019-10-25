@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Base Class for all Crypt_* cipher classes.
  *
@@ -53,7 +55,7 @@
  * @link      http://phpseclib.sourceforge.net
  */
 
-/**#@+
+/*#@+
  * @access public
  * @see self::encrypt()
  * @see self::decrypt()
@@ -94,9 +96,9 @@ define('CRYPT_MODE_OFB', 4);
  * Encrypt / decrypt using streaming mode.
  */
 define('CRYPT_MODE_STREAM', 5);
-/**#@-*/
+/*#@-*/
 
-/**#@+
+/*#@+
  * @access private
  * @see self::Crypt_Base()
  * @internal These constants are for internal use only
@@ -113,7 +115,7 @@ define('CRYPT_ENGINE_MCRYPT', 2);
  * Base value for the OpenSSL implementation $engine switch
  */
 define('CRYPT_ENGINE_OPENSSL', 3);
-/**#@-*/
+/*#@-*/
 
 /**
  * Base Class for all Crypt_* cipher classes.
@@ -1704,11 +1706,11 @@ class Crypt_Base
     {
         $this->engine = null;
 
-        $candidateEngines = array(
+        $candidateEngines = [
             $this->preferredEngine,
             CRYPT_ENGINE_OPENSSL,
             CRYPT_ENGINE_MCRYPT
-        );
+        ];
         foreach ($candidateEngines as $engine) {
             if ($this->isValidEngine($engine)) {
                 $this->engine = $engine;
@@ -1841,14 +1843,14 @@ class Crypt_Base
         $this->enchanged = $this->dechanged = true;
 
         if (!isset($this->enmcrypt)) {
-            static $mcrypt_modes = array(
+            static $mcrypt_modes = [
                 CRYPT_MODE_CTR    => 'ctr',
                 CRYPT_MODE_ECB    => MCRYPT_MODE_ECB,
                 CRYPT_MODE_CBC    => MCRYPT_MODE_CBC,
                 CRYPT_MODE_CFB    => 'ncfb',
                 CRYPT_MODE_OFB    => MCRYPT_MODE_NOFB,
                 CRYPT_MODE_STREAM => MCRYPT_MODE_STREAM,
-            );
+            ];
 
             $this->demcrypt = @mcrypt_module_open($this->cipher_name_mcrypt, '', $mcrypt_modes[$this->mode], '');
             $this->enmcrypt = @mcrypt_module_open($this->cipher_name_mcrypt, '', $mcrypt_modes[$this->mode], '');
@@ -1938,7 +1940,7 @@ class Crypt_Base
      */
     public function _clearBuffers()
     {
-        $this->enbuffer = $this->debuffer = array('ciphertext' => '', 'xor' => '', 'pos' => 0, 'enmcrypt_init' => true);
+        $this->enbuffer = $this->debuffer = ['ciphertext' => '', 'xor' => '', 'pos' => 0, 'enmcrypt_init' => true];
 
         // mcrypt's handling of invalid's $iv:
         // $this->encryptIV = $this->decryptIV = strlen($this->iv) == $this->block_size ? $this->iv : str_repeat("\0", $this->block_size);
@@ -2576,7 +2578,7 @@ class Crypt_Base
      */
     public function &_getLambdaFunctions()
     {
-        static $functions = array();
+        static $functions = [];
         return $functions;
     }
 

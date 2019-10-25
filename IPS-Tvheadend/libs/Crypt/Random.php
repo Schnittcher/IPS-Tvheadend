@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Random Number Generator.
  *
@@ -286,7 +288,7 @@ if (!function_exists('phpseclib_safe_serialize')) {
         if (isset($arr['__phpseclib_marker'])) {
             return '';
         }
-        $safearr = array();
+        $safearr = [];
         $arr['__phpseclib_marker'] = true;
         foreach (array_keys($arr) as $key) {
             // do not recurse on the '__phpseclib_marker' key itself, for smaller memory usage

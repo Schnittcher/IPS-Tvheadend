@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class TVH
 {
     private $ip;
@@ -15,18 +17,6 @@ class TVH
         $this->wUsername = $wUsername;
         $this->wPassword = $wPassword;
         return $this;
-    }
-
-    private function request($parm)
-    {
-        $url = 'http://' . $this->wUsername . ':' . $this->wPassword . '@' . $this->ip . ':' . $this->port . '/' . $parm;
-        $json = @file_get_contents($url);
-        if ($json === false) {
-            return false;
-        } else {
-            $data = json_decode($json, true);
-            return $data;
-        }
     }
 
     public function getServerInfo()
@@ -107,6 +97,18 @@ class TVH
 
             //echo 'Der Server wird gestartet.';
             //echo "Magic Packet sent (".$e.") to ".$addr.", MAC=".$this->mac;
+        }
+    }
+
+    private function request($parm)
+    {
+        $url = 'http://' . $this->wUsername . ':' . $this->wPassword . '@' . $this->ip . ':' . $this->port . '/' . $parm;
+        $json = @file_get_contents($url);
+        if ($json === false) {
+            return false;
+        } else {
+            $data = json_decode($json, true);
+            return $data;
         }
     }
 }
