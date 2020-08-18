@@ -110,14 +110,22 @@ class IPS_Tvheadend extends IPSModule
     {
         $TVH = new TVH($this->ReadPropertyString('TvhIP'), $this->ReadPropertyInteger('TvhPort'), $this->ReadPropertyString('TvhMac'), $this->ReadPropertyString('WebinterfaceUsername'), $this->ReadPropertyString('WebinterfacePassword'));
         $connections = $TVH->getConnections();
-        SetValue($this->GetIDForIdent('TVHConnections'), $connections['totalCount']);
+        if (is_array($connections)) {
+            SetValue($this->GetIDForIdent('TVHConnections'), $connections['totalCount']);
+        } else {
+            SetValue($this->GetIDForIdent('TVHConnections'), 0);
+        }
     }
 
     public function getSubscriptions()
     {
         $TVH = new TVH($this->ReadPropertyString('TvhIP'), $this->ReadPropertyInteger('TvhPort'), $this->ReadPropertyString('TvhMac'), $this->ReadPropertyString('WebinterfaceUsername'), $this->ReadPropertyString('WebinterfacePassword'));
         $connections = $TVH->getSubscriptions();
-        SetValue($this->GetIDForIdent('TVHSubscriptions'), $connections['totalCount']);
+        if (is_array($connections)) {
+            SetValue($this->GetIDForIdent('TVHSubscriptions'), $connections['totalCount']);
+        } else {
+            SetValue($this->GetIDForIdent('TVHSubscriptions'), 0);
+        }
 
         $htmlbox = '
         <style type="text/css">
