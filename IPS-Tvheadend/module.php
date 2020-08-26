@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/libs/TVH.php';
 
-class IPS_Tvheadend extends IPSModule
+class Tvheadend extends IPSModule
 {
     public function Create()
     {
@@ -76,7 +76,7 @@ class IPS_Tvheadend extends IPSModule
         $ssh = new Net_SSH2($this->ReadPropertyString('TvhIP'));
 
         if (@!$ssh->login($this->ReadPropertyString('ServerUsername'), $this->ReadPropertyString('ServerPassword'))) {
-            IPS_LogMessage('Tvheadend', 'Login failed - Server offline?');
+            $this->LogMessage('Login failed - Server offline?', KL_NOTIFY);
             return;
         }
         @$ssh->exec('shutdown -h now');
