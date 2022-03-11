@@ -71,8 +71,8 @@ class Tvheadend extends IPSModule
 
     public function shutdown()
     {
-        set_include_path(__DIR__ . '/libs');
-        require_once __DIR__ . '/libs/Net/SSH2.php';
+        set_include_path(__DIR__ . '/libs/vendor');
+        require_once __DIR__ . '/libs/vendor/Net/SSH2.php';
         $ssh = new Net_SSH2($this->ReadPropertyString('TvhIP'));
 
         if (@!$ssh->login($this->ReadPropertyString('ServerUsername'), $this->ReadPropertyString('ServerPassword'))) {
