@@ -1,11 +1,13 @@
 {
-	"id": "{5B914A83-C51A-41B9-905C-D36B18FCEB21}",
-	"name": "Tvheadend",
-	"type": 3,
-	"vendor": "",
-	"aliases": ["Tvheadend"],
-	"parentRequirements": [],
-	"childRequirements": [],
-	"implemented": [],
-	"prefix": "TVH"
+    "id": "{5B914A83-C51A-41B9-905C-D36B18FCEB21}",
+    "name": "Tvheadend",
+    "type": 3,
+    "vendor": "",
+    "aliases": [
+        "Tvheadend"
+    ],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "TVH"
 }
