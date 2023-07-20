@@ -59,8 +59,8 @@ class Tvheadend extends IPSModule
     public function checkServerStatus()
     {
         $TVH = new TVH($this->ReadPropertyString('TvhIP'), $this->ReadPropertyInteger('TvhPort'), $this->ReadPropertyString('TvhMac'), $this->ReadPropertyString('WebinterfaceUsername'), $this->ReadPropertyString('WebinterfacePassword'));
-        SetValue($this->GetIDForIdent('TVHStatus'), $TVH->getServerStatus());
-        SetValue($this->GetIDForIdent('TVHPower'), $TVH->getServerStatus());
+        $this->SetValue('TVHStatus', $TVH->getServerStatus());
+        $this->SetValue('TVHPower', $TVH->getServerStatus());
     }
 
     public function wakeUP()
@@ -89,19 +89,21 @@ class Tvheadend extends IPSModule
 
         if (is_array($recordings)) {
             if (count($recordings['entries']) > 0) {
+                $this->SendDebug('Geplante Aufnahmen', json_encode($recordings, true));
                 $startTime = $recordings['entries'][0]['start'];
                 $endTime = $recordings['entries'][0]['stop'];
                 $channel = $recordings['entries'][0]['channelname'];
-                $title = $recordings['entries'][0]['title']['ger'] . ' - ' . $recordings['entries'][0]['disp_subtitle'];
-                SetValue($this->GetIDForIdent('TVHNextRecordingChannel'), $channel);
-                SetValue($this->GetIDForIdent('TVHNextRecording'), $title);
-                SetValue($this->GetIDForIdent('TVHNextRecordingStartTime'), $startTime);
-                SetValue($this->GetIDForIdent('TVHNextRecordingEndTime'), $endTime);
+                $title = @$recordings['entries'][0]['title']['ger'] . ' - ' . $recordings['entries'][0]['disp_subtitle'];
+
+                $this->SetValue('TVHNextRecordingChannel', $channel);
+                $this->SetValue('TVHNextRecording', $title);
+                $this->SetValue('TVHNextRecordingStartTime', $startTime);
+                $this->SetValue('TVHNextRecordingEndTime', $endTime);
             } else {
-                SetValue($this->GetIDForIdent('TVHNextRecordingChannel'), '');
-                SetValue($this->GetIDForIdent('TVHNextRecording'), 'Keine Aufnahme geplant');
-                SetValue($this->GetIDForIdent('TVHNextRecordingStartTime'), 0);
-                SetValue($this->GetIDForIdent('TVHNextRecordingEndTime'), 0);
+                $this->SetValue('TVHNextRecordingChannel', '');
+                $this->SetValue('TVHNextRecording', 'Keine Aufnahme geplant');
+                $this->SetValue('TVHNextRecordingStartTime', 0);
+                $this->SetValue('TVHNextRecordingEndTime', 0);
             }
         }
     }
@@ -111,9 +113,9 @@ class Tvheadend extends IPSModule
         $TVH = new TVH($this->ReadPropertyString('TvhIP'), $this->ReadPropertyInteger('TvhPort'), $this->ReadPropertyString('TvhMac'), $this->ReadPropertyString('WebinterfaceUsername'), $this->ReadPropertyString('WebinterfacePassword'));
         $connections = $TVH->getConnections();
         if (is_array($connections)) {
-            SetValue($this->GetIDForIdent('TVHConnections'), $connections['totalCount']);
+            $this->SetValue('TVHConnections', $connections['totalCount']);
         } else {
-            SetValue($this->GetIDForIdent('TVHConnections'), 0);
+            $this->SetValue('TVHConnections', 0);
         }
     }
 
@@ -122,9 +124,9 @@ class Tvheadend extends IPSModule
         $TVH = new TVH($this->ReadPropertyString('TvhIP'), $this->ReadPropertyInteger('TvhPort'), $this->ReadPropertyString('TvhMac'), $this->ReadPropertyString('WebinterfaceUsername'), $this->ReadPropertyString('WebinterfacePassword'));
         $connections = $TVH->getSubscriptions();
         if (is_array($connections)) {
-            SetValue($this->GetIDForIdent('TVHSubscriptions'), $connections['totalCount']);
+            $this->SetValue('TVHSubscriptions', $connections['totalCount']);
         } else {
-            SetValue($this->GetIDForIdent('TVHSubscriptions'), 0);
+            $this->SetValue('TVHSubscriptions', 0);
         }
 
         $htmlbox = '
@@ -199,7 +201,7 @@ class Tvheadend extends IPSModule
             }
         }
         $htmlbox .= '</tbody></table>';
-        SetValue($this->GetIDForIdent('TVHSubscriptionsInfo'), $htmlbox);
+        $this->SetValue('TVHSubscriptionsInfo', $htmlbox);
     }
 
     public function RequestAction($Ident, $Value)
@@ -209,11 +211,11 @@ class Tvheadend extends IPSModule
                 if ($Value) {
                     $this->SendDebug(__FUNCTION__ . ' TVH Wakeup', $Value, 0);
                     $this->wakeUP();
-                    SetValue(IPS_GetObjectIDByIdent($Ident, $this->InstanceID), true);
+                    $this->SetValue($Ident, true);
                 } else {
                     $this->SendDebug(__FUNCTION__ . ' TVH Shutdown', $Value, 0);
                     $this->shutdown();
-                    SetValue(IPS_GetObjectIDByIdent($Ident, $this->InstanceID), false);
+                    $this->SetValue($Ident, false);
                 }
                     break;
         }
@@ -264,8 +266,8 @@ class Tvheadend extends IPSModule
 
     private function checkActiveRecording()
     {
-        $RecordingStartTime = GetValue($this->GetIDForIdent('TVHNextRecordingStartTime'));
-        $RecordingEndTime = GetValue($this->GetIDForIdent('TVHNextRecordingEndTime'));
+        $RecordingStartTime = $this->GetValue('TVHNextRecordingStartTime');
+        $RecordingEndTime = $this->GetValue('TVHNextRecordingEndTime');
 
         $RecordingStartTime = (int) $RecordingStartTime - ($this->ReadPropertyInteger('StartTimeRecording') * 60);
         $RecordingEndTime = (int) $RecordingEndTime + ($this->ReadPropertyInteger('EndTimeRecording') * 60);
@@ -277,9 +279,9 @@ class Tvheadend extends IPSModule
             $this->SendDebug(__FUNCTION__, 'Aktuelle Zeit: ' . time(), 0);
             $this->SendDebug(__FUNCTION__, 'Aufnahme Startzeit: ' . $RecordingEndTime, 0);
             $this->SendDebug(__FUNCTION__, 'Aufnahme Endzeit: ' . $RecordingEndTime, 0);
-            SetValue($this->GetIDForIdent('TVHActiveRecording'), true);
+            $this > SetValue('TVHActiveRecording', true);
         } else {
-            SetValue($this->GetIDForIdent('TVHActiveRecording'), false);
+            $this->SetValue('TVHActiveRecording', false);
         }
     }
 }
