@@ -89,7 +89,7 @@ class Tvheadend extends IPSModule
 
         if (is_array($recordings)) {
             if (count($recordings['entries']) > 0) {
-                $this->SendDebug('Geplante Aufnahmen', json_encode($recordings));
+                $this->SendDebug('Geplante Aufnahmen', json_encode($recordings), 0);
                 $startTime = $recordings['entries'][0]['start'];
                 $endTime = $recordings['entries'][0]['stop'];
                 $channel = $recordings['entries'][0]['channelname'];
