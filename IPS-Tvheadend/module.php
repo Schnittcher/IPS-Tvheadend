@@ -279,7 +279,7 @@ class Tvheadend extends IPSModule
             $this->SendDebug(__FUNCTION__, 'Aktuelle Zeit: ' . time(), 0);
             $this->SendDebug(__FUNCTION__, 'Aufnahme Startzeit: ' . $RecordingEndTime, 0);
             $this->SendDebug(__FUNCTION__, 'Aufnahme Endzeit: ' . $RecordingEndTime, 0);
-            $this > SetValue('TVHActiveRecording', true);
+            $this->SetValue('TVHActiveRecording', true);
         } else {
             $this->SetValue('TVHActiveRecording', false);
         }
